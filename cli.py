@@ -1,8 +1,6 @@
 import phonenumbers
 from phonenumbers import carrier, geocoder
 from opencage.geocoder import OpenCageGeocode
-import folium
-import webbrowser
 
 def track_phone_number(phone_number, api_key):
     try:
@@ -16,18 +14,17 @@ def track_phone_number(phone_number, api_key):
         lat = results[0]['geometry']['lat']
         lng = results[0]['geometry']['lng']
 
-        myMap = folium.Map(location=[lat, lng], zoom_start=9)
-        folium.Marker([lat, lng], popup=location).add_to(myMap)
-        myMap.save("myLocation.html")
-
         print(f"Phone Number: {phone_number}")
         print(f"Location: {location}")
         print(f"Service: {service}")
-        print("Map saved to myLocation.html")
+        print(f"Latitude: {lat}")
+        print(f"Longitude: {lng}")
 
-        open_map = input("Do you want to open the map in your browser? (yes/no): ")
+        open_map = input("Do you want to open the location in Google Maps? (yes/no): ")
         if open_map.lower() == "yes":
-            webbrowser.open("myLocation.html")
+            import webbrowser
+            url = f"https://www.google.com/maps/search/?api=1&query={lat},{lng}"
+            webbrowser.open(url)
 
     except Exception as e:
         print(f"Error: {e}")
